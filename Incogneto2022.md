@@ -56,7 +56,7 @@ We are told that the hacker that owned the code went by the username "cool.hacke
 
 We got the dump we needed and it looks like this
 
-![Password Dump](assets/unknown1.png)
+![Password Dump](https://github.com/logicguy1/CTF-Writeups/blob/main/assets/unknown1.png)
 
 After using that username and password we are in and have the flag without issues.
 
