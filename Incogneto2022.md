@@ -56,10 +56,10 @@ We are told that the hacker that owned the code went by the username "cool.hacke
 
 We got the dump we needed and it looks like this
 
-![Password Dump](assets/unknowen1.png)
+![Password Dump](assets/unknown1.png)
 
 After using that username and password we are in and have the flag without issues.
 
-![Anddd we have the flag!!](assets/unknowen1.png)
+![Anddd we have the flag!!](assets/unknown2.png)
 
 
