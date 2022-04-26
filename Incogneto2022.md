@@ -36,11 +36,30 @@ With burp we want to go into proxy and turn `intercept` off, as this will catch 
 
 ![Burp running the browser](assets/invisable3.png)
 
-Now that we have our packet we can click `HTTP History` right click the packet right click and `Send to repeater`
+Now that we have our packet we can click `HTTP History` right click the packet and press `Send to repeater`
 
 Now in the repeater we can change the request as we like
 
 If we chage our input to the payload we get this
 
 ![We got the flag :D](assets/invisable4.png)
+
+After we have the flag i right click and render it in my browser for the next part of the challange
+
+### Invisible (Part Two: Unknowen Pass)
+
+We are told that the hacker that owned the code went by the username "cool.hacker.8", after a google search that went like this
+
+```
+"ctf 360" 2014 "cool.hacker.8"
+```
+
+We got the dump we needed and it looks like this
+
+![Password Dump](assets/unknowen1.png)
+
+After using that username and password we are in and have the flag without issues.
+
+![Anddd we have the flag!!](assets/unknowen1.png)
+
 
