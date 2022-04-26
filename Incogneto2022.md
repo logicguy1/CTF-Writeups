@@ -62,4 +62,16 @@ After using that username and password we are in and have the flag without issue
 
 ![Anddd we have the flag!!](assets/unknown2.png)
 
+### xD
+
+xD was a steganography challange where we are given a png (tv\_chal.png) attempting to open this image results in an error being throwen saying that the image is not a reconised format.
+
+After getting the file up in gHex (a hex editor) we can see a byte header that looks like `D8 FF E0 FF` to verify that the header is in tact i did a quick search finding a page showing `FF D8 FF` as an example header, when we open the file with this new header using gimp we see this old tv
+
+![Image of an old tv](assets/xD1.png)
+
+![The flag is there :p](assets/xD2.png)
+
+
+
 
